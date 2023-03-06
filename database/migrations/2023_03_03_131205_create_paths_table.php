@@ -17,6 +17,8 @@ return new class extends Migration
             $table->uuid('id')->index();
             $table->foreignUuid('city_of_origin')->index();
             $table->foreignUuid('city_of_destination')->index();
+            $table->dateTime('departure_time');
+            $table->dateTime('arrival_time');
             $table->timestamps();
         });
     }

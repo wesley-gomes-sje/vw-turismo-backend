@@ -5,7 +5,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\PathController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);
-/* Route::post('/register/user', [AuthController::class, 'user']);
-Route::post('/register/admin', [AuthController::class, 'user'])->middleware('auth:sanctum', 'role:admin'); */
 Route::post('/register', [AuthController::class, 'register']);
 
 
@@ -33,6 +31,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('/city', CityController::class);
     Route::resource('/path', PathController::class);
     Route::resource('/ticket', TicketController::class);
+    Route::resource('/user', UserController::class);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -18,7 +18,8 @@ class PathController extends Controller
        $paths = DB::table('paths')
             ->join('cities', 'paths.city_of_origin', '=', 'cities.id')
             ->join('cities as cities2', 'paths.city_of_destination', '=', 'cities2.id')
-            ->select('paths.*', 'cities.name as city_of_origin', 'cities2.name as city_of_destination')
+            ->select('paths.id as id','paths.departure_time as departure_time','paths.arrival_time as arrival_time',
+             'cities.name as city_of_origin', 'cities2.name as city_of_destination')
             ->get();
 
         return $paths;
@@ -45,6 +46,8 @@ class PathController extends Controller
         $request->validate([
             'city_of_origin' => 'required',
             'city_of_destination' => 'required',
+            'departure_time' => 'required',
+            'arrival_time' => 'required',
         ]);
         Path::create($request->all());
 
@@ -64,7 +67,8 @@ class PathController extends Controller
         $paths = DB::table('paths')
             ->join('cities', 'paths.city_of_origin', '=', 'cities.id')
             ->join('cities as cities2', 'paths.city_of_destination', '=', 'cities2.id')
-            ->select('paths.*', 'cities.name as city_of_origin', 'cities2.name as city_of_destination')
+            ->select('paths.id as id','paths.departure_time as departure_time','paths.arrival_time as arrival_time',
+             'cities.name as city_of_origin', 'cities2.name as city_of_destination')
             ->where('paths.id', $id)
             ->get();
 
@@ -94,6 +98,8 @@ class PathController extends Controller
         $request->validate([
             'city_of_origin' => 'required',
             'city_of_destination' => 'required',
+            'departure_time' => 'required',
+            'arrival_time' => 'required',
         ]);
 
         $path = Path::find($id);

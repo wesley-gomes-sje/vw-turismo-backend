@@ -14,6 +14,8 @@ class Path extends Model
     protected $fillable = [
         'city_of_origin',
         'city_of_destination',
+        'departure_time',
+        'arrival_time',
     ];
 
      /**

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Bus;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
-class BusController extends Controller
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +15,16 @@ class BusController extends Controller
      */
     public function index()
     {
-        $bus = DB::table('buses')
-            ->select('buses.id as id', 'buses.name as name', 'buses.plate as plate', 'buses.seats as seats')
+        $users = DB::table('users')
+            ->select(
+                'id',
+                'name',
+                'nickname',
+                'email',
+                'phone'
+            )
             ->get();
-            return $bus;
+        return $users;
     }
 
     /**
@@ -40,11 +47,17 @@ class BusController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'plate' => 'required',
-            'seats' => 'required',
+            'nickname' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'password' => 'required',
+            'type' => 'required',
         ]);
+        User::create($request->all());
 
-        return Bus::create($request->all());
+        return response()->json([
+            'message' => 'Usuário criado com sucesso!'
+        ]);
     }
 
     /**
@@ -55,12 +68,18 @@ class BusController extends Controller
      */
     public function show($id)
     {
-        $bus = DB::table('buses')
-            ->select('buses.id as id', 'buses.name as name', 'buses.plate as plate', 'buses.seats as seats')
-            ->where('buses.id', '=', $id)
+        $users = DB::table('users')
+            ->select(
+                'id',
+                'name',
+                'nickname',
+                'email',
+                'phone'
+            )
+            ->where('id', '=', $id)
             ->get();
 
-        return $bus;
+        return $users;
     }
 
     /**
@@ -85,13 +104,28 @@ class BusController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'plate' => 'required',
-            'seats' => 'required',
+            'nickname' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'password' => 'required',
+            'type' => 'required',
         ]);
 
-        $bus = Bus::find($id);
-        $bus->update($request->all());
-        return $bus;
+        $user = User::find($id);
+        $user->update($request->all());
+
+        $newUser = DB::table('users')
+            ->select(
+                'id',
+                'name',
+                'nickname',
+                'email',
+                'phone'
+            )
+            ->where('id', '=', $id)
+            ->get();
+
+        return $newUser;
     }
 
     /**
@@ -102,6 +136,11 @@ class BusController extends Controller
      */
     public function destroy($id)
     {
-        return Bus::destroy($id);
+        $user = User::find($id);
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Usuário deletado com sucesso!'
+        ]);
     }
 }

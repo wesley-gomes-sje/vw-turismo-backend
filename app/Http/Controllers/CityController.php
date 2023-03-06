@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\City;
+use Illuminate\Support\Facades\DB;
 class CityController extends Controller
 {
     /**
@@ -13,7 +14,11 @@ class CityController extends Controller
      */
     public function index()
     {
-        return City::all();
+        $cities = DB::table('cities')
+            ->select('cities.id as id', 'cities.name as name')
+            ->get();
+
+        return $cities;
     }
 
     /**
@@ -49,7 +54,12 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        return City::find($id);
+        $cities = DB::table('cities')
+            ->select('cities.id as id', 'cities.name as name')
+            ->where('cities.id', '=', $id)
+            ->get();
+
+            return $cities;
     }
 
     /**
